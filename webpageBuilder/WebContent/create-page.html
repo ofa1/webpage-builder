@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Create a new webpage</title>
+<link href="css/bootstrap.css" rel="stylesheet" />
+<script src="js/jquery-1.11.0.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+</head>
+<body>
+
+	<div class="container">
+		<form action="ToDb" method="post">
+			<div id="title">
+				<h3>Enter the title of the webpage</h3>
+				<input type="text" name="title" id="title" onkeyup="validateTitle()">
+			</div>
+			<div id="description">
+				<h3>Enter the description of the webpage</h3>
+				<input type="text" name="description" id="description" onkeyup="validateDescription()">
+			</div>
+			
+			<div id="textboxdiv">
+				<h3>Enter the number of textboxes</h3>
+				<input type="text" name="textbox-count" id="textbox" onkeyup="getLabels('textbox')">
+			</div>
+			<div id="textbox-labels">
+			</div>
+			
+			<div id="radiobutton-count">
+				<h3>Enter the number of Radiobuttons</h3>
+				<input type="text" name="radiobutton-count" id="radiobutton" onkeyup="getLabels('radiobutton')">
+			</div>
+			<div id="radiobutton-labels">
+			</div>
+			
+			<div id="checkbox-count">
+				<h3>Enter the number of Checkboxes</h3>
+				<input type="text" name="checkbox-count" id="checkbox" onkeyup="getLabels('checkbox')">
+			</div>
+			<div id="checkbox-labels">
+			</div>
+			
+			<div id="images">
+				<h3>Enter the number of images</h3>
+				<input type="text" name="images" id="images" onkeyup="images()">
+			</div>
+			
+			
+		</form>
+	</div>
+<script src="js/createpage.js"></script>
+</body>
+</html>
