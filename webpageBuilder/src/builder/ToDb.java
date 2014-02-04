@@ -7,8 +7,6 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Enumeration;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -27,7 +25,6 @@ public class ToDb extends HttpServlet {
      */
     public ToDb() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
