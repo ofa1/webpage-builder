@@ -9,6 +9,6 @@ function getLabels(elementId) {
 	
 	for(var i=0; i<count; i++)
 	{
-		document.getElementById(elementId+"-labels").innerHTML += "<br>"+(i+1)+": <input type=\"text\" name=\""+elementId+"-"+count+"\"" +" ><br>";
+		document.getElementById(elementId+"-labels").innerHTML += "<br>"+(i+1)+": <input type=\"text\" name=\""+elementId+"-"+i+"\"" +" ><br>";
 	}
 }
