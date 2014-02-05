@@ -72,9 +72,23 @@ public class ToDb extends HttpServlet {
 			con=DriverManager.getConnection("jdbc:mysql://localhost:3306/webpagebuilder","root","root");
 			st=con.createStatement();
 			
-			String insertStatemetn = "insert into webpage(title,description,paragraphs) values('"+title+"','"+disc+"'');";
+			String insertStatemetn = "insert into webpage(title,description,paragraphs) values('"+title+"','"+disc+"','');";
+			st.executeUpdate(insertStatemetn);
 			
-			System.out.println("hi"+st.executeUpdate(insertStatemetn));
+			String lastid = "select LAST_INSERT_ID()";
+			
+			rs = st.executeQuery(lastid);
+			
+			while(rs.next())
+			{
+				
+			}
+			
+			insertStatemetn = "insert into pagedata(pageid,elementtype,seq) values("+rs.getBigDecimal(1)+",'"+"eid"+"',"+"0"+");";
+			
+			System.out.println(insertStatemetn);
+			
+			st.executeUpdate(insertStatemetn);
 			
 			st.close();
 			con.close();
