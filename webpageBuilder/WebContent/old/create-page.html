@@ -13,15 +13,14 @@
 			<form action="ToDb" method="post">
 				<div id="title">
 					<h3>Enter the title of the webpage</h3>
-					<input type="text" name="title" id="title"
+					<input type="text" name="title" id="title" required data-validation="length" data-validation-length="min4"
 						onkeyup="validateTitle()">
 				</div>
 				<div id="description">
 					<h3>Enter the description of the webpage</h3>
-					<input type="text" name="description" id="description"
+					<input type="text" name="description" id="description" data-validation="length" data-validation-length="min10"
 						onkeyup="validateDescription()">
 				</div>
-
 				<div id="textboxdiv">
 					<h3>Enter the number of textboxes</h3>
 					<input type="text" name="textbox-count" id="textbox"
