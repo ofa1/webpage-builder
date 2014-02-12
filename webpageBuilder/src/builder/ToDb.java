@@ -7,6 +7,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -28,78 +29,113 @@ public class ToDb extends HttpServlet {
 		super();
 	}
 
+	/** (non-Javadoc)
+	 * @see javax.servlet.http.HttpServlet#doGet(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+	 * type here what all you want as parameters
+	 * Page one -> Title, Description, Textarea
+	 * Page two -> {textbox, Radio buttons, Buttons, Checkboxes} with counts
+	 * 			-> Ordering numbers
+	 */
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		resp.setContentType("text/html");
-		PrintWriter out = resp.getWriter();
-		out.println("Test page");
-
-		ArrayList<String> tcl = new ArrayList<String>();
-		for(int i = 0 ; i < 3 ; i++ ){
-			tcl.add("textbox-"+i);
+		
+		String title = "title";
+		String description = "description";
+		String paragraph = "paragraphs";
+		int pageid = 0;
+		
+		Connection con=null;
+		Statement st=null;
+		ResultSet rs=null;
+		
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			con=DriverManager.getConnection("jdbc:mysql://localhost:3306/webpagebuilder","root","root");
+			st=con.createStatement();
+			String insert="insert into webpage(title,description,paragraphs) values('"+title+"','"+description+"','"+paragraph+"');";
+			st.executeUpdate(insert);
+			
+			insert="select max(pageid) from webpage";
+            
+			rs = st.executeQuery(insert);
+			while(rs.next())
+			{
+				pageid = rs.getInt(1);
+			}
+			
+			//inserting elements all
+			int count = 1;//Integer.parseInt(request.getParameter("count"));
+			
+			for(int i = 0 ; i < count ; i++ ){
+				String getelement = "li_textbox_1";//request.getParameter(""+i);
+				StringTokenizer sto = new StringTokenizer(getelement,"_");
+				sto.nextToken();
+				String type = sto.nextToken();
+				int id = Integer.parseInt(sto.nextToken());
+				String lable = "lable";//request.getParameter(type+"_"+id);
+				if(type.equals("textbox")){
+					insert="insert into pagedata(pageid,elementlable,elementtype,seq) values('"+pageid+"','"+lable+"','"+type+"',"+i+");";
+					st.executeUpdate(insert);
+				}else if(type.equals("button")){
+					String butname = "buttonname";
+					insert="insert into pagedata(elementlable,elementtype,seq,buttonname) values('"+pageid+"','"+lable+"','"+type+"',"+i+",'"+butname+"');";
+					st.executeUpdate(insert);
+				} 
+			}
+			
+			st.close();
+            con.close();
+		}catch(Exception e1){
+			
 		}
-
-		//radio butt
-		ArrayList<String> rbl = new ArrayList<String>();
-		for(int i = 0 ; i < 2 ; i++ ){
-			rbl.add("radiobutton-"+i);
-		} 
-		//check box
-		ArrayList<String> cbl = new ArrayList<String>();
-		for(int i = 0 ; i < 4 ; i++ ){
-			cbl.add(("checkbox-"+i));
-		}
-
-		System.out.println("textbox : " + tcl + "\nradio buttons : " + rbl + "\ncheckbox : " + cbl);
-		putintoDB("test2","testdesc2", "", 3, 2, 4, tcl, rbl, cbl);
+		
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * 
 	 */
 	@SuppressWarnings("unused")
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		PrintWriter out = response.getWriter();
-		response.setContentType("text/html");
-
-		//Title
-		String title = request.getParameter("title");
-
-		//Description
-		String description = request.getParameter("description");
-
-		//Paragraphs
-		String paragraphs = "";
-
-		//textBoxes
-		int tbc = Integer.parseInt(request.getParameter("textbox-count"));
-		ArrayList<String> tcl = new ArrayList<String>();
-		for(int i = 0 ; i < tbc ; i++ ){
-			tcl.add(request.getParameter("textbox-"+i));
+		
+		
+		
+		/*
+		int buttoncount = //Integer.parseInt(request.getParameter("buttoncount"));
+		int checkboxcount = Integer.parseInt(request.getParameter("checkboxcount"));
+		int radiobuttoncount = Integer.parseInt(request.getParameter("rediobuttoncount"));
+		int textboxcount = Integer.parseInt(request.getParameter("textboxcount"));
+		int count = Integer.parseInt(request.getParameter("count"));
+		
+		Connection con=null;
+		Statement st=null;
+		ResultSet rs=null;
+		
+		for(int i = 0 ; i < count ; i++ ){
+			String getparam = request.getParameter(""+i);
+			StringTokenizer sto = new StringTokenizer(getparam,"_");
+			sto.nextToken();
+			String type = sto.nextToken();
+			int id = Integer.parseInt(sto.nextToken());
+			String lable = request.getParameter(type+"_"+id);
+			if(type.equals("textbox")){
+				try {
+					Class.forName("com.mysql.jdbc.Driver");
+					con=DriverManager.getConnection("jdbc:mysql://localhost:3306/webpagebuilder","root","root");
+					st=con.createStatement();
+					String insert="insert into pagedata(elementlable,elementtype,seq) values('"+lable+"','"+type+"',"+i+");";
+					st.executeUpdate(insert);
+		            System.out.println("after");
+		                		 
+					st.close();
+		            con.close();
+				}catch(Exception e1){
+					
+				}
+			}
 		}
-
-		//radio buttons
-		int rbc = Integer.parseInt(request.getParameter("radiobutton-count"));
-		ArrayList<String> rbl = new ArrayList<String>();
-		for(int i = 0 ; i < rbc ; i++ ){
-			rbl.add(request.getParameter("radiobutton-"+i));
-		} 
-		//check boxes
-		int cbc = Integer.parseInt(request.getParameter("checkbox-count"));
-		ArrayList<String> cbl = new ArrayList<String>();
-		for(int i = 0 ; i < cbc ; i++ ){
-			cbl.add(request.getParameter("checkbox-"+i));
-		}
 		
-		//Images
-		
-		
-		System.out.println("Title : "+title+"\nDescription : "+ description);
-		System.out.println("textbox : " + tcl + "\nradio buttons : " + rbl + "\ncheckbox : " + cbl);
-
-		//putintoDB(title, description, paragraphs, tbc, rbc, cbc, tblabels, rblabels, cblabels);
-
-		out.close();
+		*/
 	}
 
 	/**
