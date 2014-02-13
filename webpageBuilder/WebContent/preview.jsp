@@ -1,7 +1,8 @@
 <%@page import="staticcontent.Content"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
-<%@page import="java.util.*;"%>
+<%@page import="java.util.*"%>
+<%@page import="java.io.*"%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -45,8 +46,29 @@ else
 			<%=session.getAttribute("content")%>
 		</div>
 		<%
-			int count = Integer
-					.parseInt((String) session.getAttribute("count"));
+			File file = new File("/genaratedfiles/test.html");
+		try {
+			 
+			String content = "This is the content to write into file";
+
+			// if file doesnt exists, then create it
+			if (!file.exists()) {
+				file.createNewFile();
+			}
+ 
+			FileWriter fw = new FileWriter(file.getAbsoluteFile());
+			BufferedWriter bw = new BufferedWriter(fw);
+			bw.write("<h3>hiiiiiiiiiii</h3>");
+			bw.close();
+ 
+			System.out.println("Done");
+ 
+		} catch (IOException ee) {
+			ee.printStackTrace();
+			System.out.println("in chatch");
+		}
+			
+			int count = Integer.parseInt((String) session.getAttribute("count"));
 			for (int i = 0; i < count; i++) {
 				String getelement = session.getAttribute("" + i).toString();
 				StringTokenizer sto = new StringTokenizer(getelement, "_");
@@ -54,27 +76,27 @@ else
 				String type = sto.nextToken();
 				int id = Integer.parseInt(sto.nextToken());
 				if (type.equals("textbox")) {
-					String lable = (String) session.getAttribute(type + "_"
-							+ id);
-		%><label> <%=lable%> :
-		</label><input type="text" class="form-control"><br>
-		<%
-			} else if (type.equals("button")) {
+					String lable = (String) session.getAttribute(type + "_"+ id);
+					%>
+					<label> <%=lable%> :
+					</label><input type="text" class="form-control"><br>
+					<%
+				} else if (type.equals("button")) {
 					StringTokenizer tempsto = new StringTokenizer(
 							(String) session.getAttribute(type + "_" + id), "_");
 					String lable = tempsto.nextToken();
 					String butname = tempsto.nextToken();
-		%><label> <%=lable%> :
-		</label><input type="button" value=<%=butname%> class="form-control"><br>
-		<%
-			} else if (type.equals("checkbox")) {
+				%><label> <%=lable%> :
+				</label><input type="button" value=<%=butname%> class="form-control"><br>
+				<%
+				} else if (type.equals("checkbox")) {
 					StringTokenizer tempsto = new StringTokenizer(
 							(String) session.getAttribute(type + "_" + id), "_");
 					String lable = tempsto.nextToken();
 					int nosub = Integer.parseInt(tempsto.nextToken());
-		%><label> <%=lable%> :
-		</label>
-		<%
+					%><label> <%=lable%> :
+					</label>
+					<%
 			for (int j = 0; j < nosub; j++) {
 						String sublable = (String) session
 								.getAttribute("checkboxes_checkbox_" + id + "_"

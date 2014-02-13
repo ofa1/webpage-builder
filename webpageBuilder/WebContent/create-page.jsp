@@ -28,8 +28,10 @@ else
 				<li><a href="create-page.jsp">Create Page</a></li>
 				<li><a href="Logout">Logout</a></li>
 				<% }
-				else {%>
+				else {
+				response.sendRedirect("login.jsp");%>
 				<li><a href="login.jsp">Login/Register</a></li>
+				
 				<% } %>
 				<li><a href="contact-us.jsp">Contact Us</a></li>
 			</ul>
@@ -52,15 +54,14 @@ else
 			<!-- Upload -->
 			<div id="upload">
 				<h4>Upload Background Image</h4>
-				<input type="text" name="description" id="description" class="form-control"
-					data-validation="length" data-validation-length="min10">
+				<input type="text" name="image" id="image" class="form-control">
 			</div>
 			<br>
 
 
 			<textarea id="editor" form="form" name="content"></textarea>
 			
- 			<input type="submit" id="submit" >
+ 			<input type="submit" id="submit" class="btn btn-success" >
 
 		</form>
 	</div>
