@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class registrationForm
  */
-@WebServlet("/registrationForm")
+@WebServlet("/Registration")
 public class Registration extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -55,9 +55,10 @@ public class Registration extends HttpServlet {
 			Statement stmt = (Statement) con.createStatement();
 			
 			String str = "Insert into user_details values(\""+username+"\", \""+email+"\", \""+password+"\");";
-	
-			stmt.executeUpdate(str);
 			
+			System.out.println(str);
+			stmt.executeUpdate(str);
+			response.sendRedirect("login.jsp");
 			con.close();
 		} catch(Exception ex) {
 			ex.printStackTrace();						

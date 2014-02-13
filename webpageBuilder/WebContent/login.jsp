@@ -39,10 +39,11 @@
 											</div>
 											<div class="control-group">
 												<!-- Username -->
-												<label class="control-label" for="username">Username</label>
+
 												<div class="controls">
-													<input type="text" id="username" name="username"
-														placeholder="" class="input-xlarge">
+													<label class="control-label" for="email">Email</label> <input
+														type="text" id="email" name="email" placeholder="Email"
+														class="form-control">
 												</div>
 											</div>
 
@@ -51,7 +52,7 @@
 												<label class="control-label" for="password">Password</label>
 												<div class="controls">
 													<input type="password" id="password" name="password"
-														placeholder="" class="input-xlarge">
+														placeholder="Password" class="form-control">
 												</div>
 											</div>
 
@@ -59,22 +60,28 @@
 											<div class="control-group">
 												<!-- Button -->
 												<div class="controls">
-													<button class="btn btn-success">Login</button>
+													<button class="btn btn-success btn-default">Login</button>
 												</div>
 											</div>
 										</fieldset>
 									</form>
 								</div>
 								<div class="tab-pane fade" id="create">
-									<form id="tab" action="Registration" method="Post">
-										<label>Username</label> <input type="text" value=""
-											class="input-xlarge"><br> <label>First
-											Name</label> <input type="text" value="" class="input-xlarge"><br>
-										<label>Last Name</label> <input type="text" value=""
-											class="input-xlarge"><br> <label>Email</label> <input
-											type="text" value="" class="input-xlarge"><br> <label>Address</label>
-										<textarea value="Smith" rows="3" class="input-xlarge">
-                        </textarea>
+									<form id="tab" action="Registration" method="POST">
+										<label>Username</label> <input type="text" name="username"
+											data-validation="length alphanumeric"
+											data-validation-length="3-12"
+											data-validation-error-msg="The user name has to be an alphanumeric value between 3-12 characters"
+											required class="form-control"><br> <label>First
+											Name</label> <input type="text" value="" name="fname"
+											class="form-control"><br> <label>Last
+											Name</label> <input type="text" value="" name="lname"
+											class="form-control"><br> <label>Email</label> <input
+											type="text" value="" name="email" class="form-control"
+											data-validation="email" required><br> <label>Password</label>
+										<input type="password" required name="password"
+											class="form-control" name="pass_confirmation"
+											data-validation="strength" data-validation-strength="2">
 
 										<div>
 											<button class="btn btn-primary">Create Account</button>
@@ -89,9 +96,13 @@
 		</div>
 	</div>
 	<div class="well footer">&copy; AOS 2014</div>
-	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-	<script src="js/jquery-1.11.0.min.js"></script>
-	<!-- Include all compiled plugins (below), or include individual files as needed -->
-	<script src="js/bootstrap.min.js"></script>
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="js/jquery-1.11.0.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="js/bootstrap.min.js"></script>
+<script src="js/jquery.form-validator.min.js"></script>
+<script>
+$.validate();
+</script>
 </body>
 </html>

@@ -7,8 +7,13 @@
 <title>Homepage</title>
 <%
 String user = "user";
+boolean flag = false;
 if(session.getAttribute("username") != null)
 	user = session.getAttribute("username").toString();
+else
+	flag = true;
+
+
 %>
 <link href="css/bootstrap.css" rel="stylesheet" />
 <link href="http://getbootstrap.com/dist/css/bootstrap-theme.min.css"

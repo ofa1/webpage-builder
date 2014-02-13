@@ -18,39 +18,29 @@
 <script type="text/javascript" src="js/sec.js"></script>
 <link href="css/bootstrap.css" rel="stylesheet" />
 <style>
-  #sortable { list-style-type: none; margin: 0; padding: 0; width: 60%; }
-  #sortable li { margin: 0 3px 3px 3px; padding: 0.4em; padding-left: 1.5em; font-size: 1.4em; height: 18px; }
-  #sortable li span { position: absolute; margin-left: -1.3em; }
- </style>
-<script>
-$('ul').on("click", function(event){
-  var target = event.target,
-      index = $(target).index();
-    console.log(target, index);
-});
-</script>
-</head>
-<style>
-#space {
+#sortable {
 	list-style-type: none;
-	margin: 0;
-	padding: 0;
-	width: 60%;
+	width:auto;
 }
 
-#space li {
-	margin: 0 3px 3px 3px;
-	padding: 0.4em;
-	padding-left: 1.5em;
-	font-size: 1.4em;
-	height: 18px;
+#sortable li {
+	padding: 5px;
+	height: 40px;
+	border: 2px dotted grey;
+	margin: 3px;
 }
 
-#space li span {
-	position: absolute;
-	margin-left: -1.3em;
+#element {
+	
 }
 </style>
+<script>
+	$('ul').on("click", function(event) {
+		var target = event.target, index = $(target).index();
+		console.log(target, index);
+	});
+</script>
+</head>
 <script>
 	$(function() {
 		$("#sortable").sortable();
@@ -70,9 +60,10 @@ $('ul').on("click", function(event){
 				<option id="checkbox">Checkbox</option>
 			</select> <input type="button" value="add" onclick="add()"><br>
 
-			<ul id="sortable">
-			</ul>
-
+			<div id="elements">
+				<ul id="sortable">
+				</ul>
+			</div>
 			<div id="space1"></div>
 			<input type="button" value="upload" onclick="save()">
 

@@ -1,7 +1,6 @@
 package builder;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -14,6 +13,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  * Servlet implementation class ToDb
@@ -39,9 +39,11 @@ public class ToDb extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		
-		String title = "title";
-		String description = "description";
-		String paragraph = "paragraphs";
+		HttpSession session = req.getSession(false);
+		
+		String title = session.getAttribute("title").toString();
+		String description = session.getAttribute("description").toString();
+		String paragraph = session.getAttribute("content").toString();
 		int pageid = 0;
 		
 		Connection con=null;
@@ -63,24 +65,52 @@ public class ToDb extends HttpServlet {
 				pageid = rs.getInt(1);
 			}
 			
+			String uname = session.getAttribute("username").toString();
+			
+			insert="insert into userpage('"+uname+"','"+pageid+"');";
+			
 			//inserting elements all
-			int count = 1;//Integer.parseInt(request.getParameter("count"));
+			int count = Integer.parseInt(session.getAttribute("count").toString());
 			
 			for(int i = 0 ; i < count ; i++ ){
-				String getelement = "li_textbox_1";//request.getParameter(""+i);
+				String getelement = session.getAttribute(""+i).toString();
 				StringTokenizer sto = new StringTokenizer(getelement,"_");
 				sto.nextToken();
 				String type = sto.nextToken();
 				int id = Integer.parseInt(sto.nextToken());
-				String lable = "lable";//request.getParameter(type+"_"+id);
 				if(type.equals("textbox")){
+					String lable = (String)session.getAttribute(type+"_"+id);
 					insert="insert into pagedata(pageid,elementlable,elementtype,seq) values('"+pageid+"','"+lable+"','"+type+"',"+i+");";
 					st.executeUpdate(insert);
 				}else if(type.equals("button")){
-					String butname = "buttonname";
-					insert="insert into pagedata(elementlable,elementtype,seq,buttonname) values('"+pageid+"','"+lable+"','"+type+"',"+i+",'"+butname+"');";
+					String lable = (String)session.getAttribute(type+"_"+id);
+					insert="insert into pagedata(pageid,elementlable,elementtype,seq) values('"+pageid+"','"+lable+"','"+type+"',"+i+");";
 					st.executeUpdate(insert);
-				} 
+				}else if(type.equals("checkbox")){
+					String lable = (String)session.getAttribute(type+"_"+id);
+					StringTokenizer tempsto = new StringTokenizer((String)session.getAttribute(type+"_"+id),"_");
+					tempsto.nextToken();
+					int nosub = Integer.parseInt(tempsto.nextToken());
+					insert="insert into pagedata(pageid,elementlable,elementtype,seq) values('"+pageid+"','"+lable+"','"+type+"',"+i+");";
+					st.executeUpdate(insert);
+					for(int j = 0 ; j < nosub ; j++){
+						String sublable = (String)session.getAttribute("checkboxes_checkbox_"+id+"_"+j);
+						insert="insert into subdata(elementlable,elementid) values('"+sublable+"','"+lable+"');";
+						st.executeUpdate(insert);
+					}
+				}else if(type.equals("radiobutton")){
+					String lable = (String)session.getAttribute(type+"_"+id);
+					StringTokenizer tempsto = new StringTokenizer((String)session.getAttribute(type+"_"+id),"_");
+					tempsto.nextToken();
+					int nosub = Integer.parseInt(tempsto.nextToken());
+					insert="insert into pagedata(pageid,elementlable,elementtype,seq) values('"+pageid+"','"+lable+"','"+type+"',"+i+");";
+					st.executeUpdate(insert);
+					for(int j = 0 ; j < nosub ; j++){
+						String sublable = (String)session.getAttribute("radiobuttons_radiobutton_"+id+"_"+j);
+						insert="insert into subdata(elementlable,elementid) values('"+sublable+"','"+lable+"');";
+						st.executeUpdate(insert);	
+					}
+				}
 			}
 			
 			st.close();

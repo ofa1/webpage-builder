@@ -11,36 +11,6 @@
 %>
 <link href="css/bootstrap.css" rel="stylesheet" />
 <script src="ckeditor/ckeditor.js"></script>
-<script>
-	var editor, html = '';
-
-	function createEditor() {
-		if (editor)
-			return;
-
-		// Create a new editor inside the <div id="editor">, setting its value to html
-		var config = {};
-		editor = CKEDITOR.appendTo('editor', config, html);
-	}
-
-	function removeEditor() {
-		if (!editor)
-			return;
-
-		// Retrieve the editor contents. In an Ajax application, this data would be
-		// sent to the server or used in any other way.
-		document.getElementById('textarea').innerHTML = html = editor
-				.getData();
-		document.getElementById('contents').style.display = '';
-
-		// Destroy the editor.
-		editor.destroy();
-		editor = null;
-	}
-	function Submit() {
-		document.getElementById('textarea').innerHTML = html = editor.getData();
-	}
-</script>
 
 </head>
 <body>
@@ -51,23 +21,21 @@
 			<!-- Title -->
 			<div id="title">
 				<h4>Enter the title of the webpage</h4>
-				<input type="text" name="title" id="title" required
+				<input type="text" name="title" id="title" required class="form-control"
 					data-validation="length" data-validation-length="min4">
 			</div>
 			<!-- Description -->
 			<div id="description">
 				<h4>Enter the description of the webpage</h4>
-				<input type="text" name="description" id="description"
+				<input type="text" name="description" id="description" class="form-control"
 					data-validation="length" data-validation-length="min10">
 			</div>
-			<!-- Richtext Editor -->
-			<input onclick="createEditor();" type="button" value="Create Editor">
-			<input onclick="removeEditor();" type="button" value="Remove Editor">
+			<br>
 
-			<div id="editor"></div>
+
+			<textarea id="editor" form="form" name="content"></textarea>
 			
-			<textarea  rows="" cols="" hidden="hidden" name="textarea" id="textarea" form="form"></textarea>
-			<input type="submit" name="submit" id="submit" onclick="Submit()">
+ 			<input type="submit" id="submit" >
 
 		</form>
 	</div>
@@ -78,6 +46,8 @@
 	<!-- Include all compiled plugins (below), or include individual files as needed -->
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/jquery.form-validator.min.js"></script>
-
+	<script type="text/javascript">
+	CKEDITOR.replace( 'editor' );
+	</script>
 </body>
 </html>

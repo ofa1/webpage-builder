@@ -40,6 +40,7 @@ public class FormHandler extends HttpServlet {
 		if(session == null)
 			response.sendRedirect("login.jsp");
 		Map <String, String[] > map = request.getParameterMap();
+		boolean flag = false;
 		if(map!=null)
 		{
 			Iterator<String> keys = map.keySet().iterator();
@@ -52,10 +53,22 @@ public class FormHandler extends HttpServlet {
 				{
 					System.out.println(i);
 					session.setAttribute(key, i);
+					if(key.equalsIgnoreCase("title"))
+						flag = true;
 				}
 			}
-
+			
+			if(flag)
+			{
+				response.sendRedirect("second.jsp");
+			}
+			else
+			{
+				response.sendRedirect("preview.jsp");
+			}
 		}
+		else
+			response.sendRedirect("create-page.jsp");
 		//	System.out.println(map);
 	}
 
