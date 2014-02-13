@@ -1,6 +1,10 @@
 package builder;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -112,13 +116,80 @@ public class ToDb extends HttpServlet {
 					}
 				}
 			}
-			
-			st.close();
-            con.close();
-		}catch(Exception e1){
-			
-		}
 		
+		//create .html
+		
+			StringTokenizer stop = new StringTokenizer(req.getRealPath(req.getServletPath()),"\\");
+			String temp="", path ="";
+			while(!(temp = stop.nextToken()).equals(".metadata")){
+				path+=temp+"\\";
+			}
+			path+="webpageBuilder\\WebContent\\htms\\"+session.getAttribute("username")+"_"+pageid+".html";
+			
+			File file = new File(path);
+			FileWriter fw = new FileWriter(file.getAbsoluteFile());
+			BufferedWriter bw = new BufferedWriter(fw);
+				
+			if (!file.exists()) {
+				file.createNewFile();
+			}
+			
+			for (int i = 0; i < count; i++) {
+				String getelement = session.getAttribute("" + i).toString();
+				StringTokenizer sto = new StringTokenizer(getelement, "_");
+				sto.nextToken();
+				String type = sto.nextToken();
+				int id = Integer.parseInt(sto.nextToken());
+				if (type.equals("textbox")) {
+					String lable = (String) session.getAttribute(type + "_"+ id);
+					bw.write("<label> "+lable+" :</label><input type=\"text\" ><br>");					
+				} else if (type.equals("button")) {
+					StringTokenizer tempsto = new StringTokenizer(
+							(String) session.getAttribute(type + "_" + id), "_");
+					String lable = tempsto.nextToken();
+					String butname = tempsto.nextToken();
+					bw.write("<label> "+lable+" :</label><input type=\"butto\" value="+butname+"><br>");
+				} else if (type.equals("checkbox")) {
+					StringTokenizer tempsto = new StringTokenizer(
+							(String) session.getAttribute(type + "_" + id), "_");
+					String lable = tempsto.nextToken();
+					int nosub = Integer.parseInt(tempsto.nextToken());
+					bw.write("<label> "+lable+" :</label>");
+					for (int j = 0; j < nosub; j++) {
+								String sublable = (String) session.getAttribute("checkboxes_checkbox_" + id + "_"+ j);
+								bw.write("<input type=\"checkbox\"><label>"+sublable+"</label>");
+					}
+					bw.write("<br>");
+				}else if (type.equals("radiobutton")) {
+					StringTokenizer tempsto = new StringTokenizer(
+							(String) session.getAttribute(type + "_" + id), "_");
+					String lable = tempsto.nextToken();
+					int nosub = Integer.parseInt(tempsto.nextToken());
+					bw.write("<label> "+lable+" :</label>");
+					for (int j = 0; j < nosub; j++) {
+						String sublable = (String) session.getAttribute("radiobuttons_radiobutton_" + id+ "_" + j);
+						bw.write("<input type=\"radio\"><label>"+sublable+"</label>");
+					}
+					bw.write("<br>");
+				}
+			}
+				bw.close();
+				System.out.println(path);
+				insert = "insert into userpage values('"+uname+"','"+pageid+"','"+path+"');";
+				System.out.println(insert);
+				st.executeUpdate(insert);
+				st.close();
+		        con.close();
+		        
+		        resp.setContentType("text/html");
+		        PrintWriter out = resp.getWriter();
+		        out.println("<html><body>"
+		        		+ "<a href=\""+path+"\">"+path+"</a>"
+		        		+ "</body></html>");
+		} catch (Exception ee) {
+			ee.printStackTrace();
+			System.out.println("in chatch");
+		}	
 	}
 
 	/**

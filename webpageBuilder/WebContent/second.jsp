@@ -58,6 +58,9 @@ else
 
 
 %>
+		<div class="navbar navbar-fixed-top">
+		
+		</div>
 		<nav class="navbar navbar-default" role="navigation">
 			<ul class="nav nav-tabs nav-justified" id="navlist">
 				<li><a href="homepage.jsp">Home</a></li>

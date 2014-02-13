@@ -22,19 +22,21 @@ if(session.getAttribute("username") != null)
 else
 	flag = true;
 %>
-		<nav class="navbar navbar-default" role="navigation">
-			<ul class="nav nav-tabs nav-justified" id="navlist">
-				<li><a href="homepage.jsp">Home</a></li>
-				<%if(!flag) { %>
-				<li><a href="create-page.jsp">Create Page</a></li>
-				<li><a href="Logout">Logout</a></li>
-				<% }
-				else {%>
-				<li><a href="login.jsp">Login/Register</a></li>
-				<% } %>
-				<li><a href="contact-us.jsp">Contact Us</a></li>
-			</ul>
-		</nav>
+	<nav class="navbar navbar-default" role="navigation">
+	<ul class="nav nav-tabs nav-justified" id="navlist">
+		<li><a href="homepage.jsp">Home</a></li>
+		<%if(!flag) { %>
+		<li><a href="create-page.jsp">Create Page</a></li>
+		<li><a href="Logout">Logout</a></li>
+		<% }
+				else {
+				response.sendRedirect("login.jsp");
+				%>
+		<li><a href="login.jsp">Login/Register</a></li>
+		<% } %>
+		<li><a href="contact-us.jsp">Contact Us</a></li>
+	</ul>
+	</nav>
 	<%
 		Enumeration<String> e = session.getAttributeNames();
 	%>
@@ -45,30 +47,11 @@ else
 		<div id="editable" contenteditable="true">
 			<%=session.getAttribute("content")%>
 		</div>
-		<%
-			File file = new File("/genaratedfiles/test.html");
-		try {
-			 
-			String content = "This is the content to write into file";
-
-			// if file doesnt exists, then create it
-			if (!file.exists()) {
-				file.createNewFile();
-			}
- 
-			FileWriter fw = new FileWriter(file.getAbsoluteFile());
-			BufferedWriter bw = new BufferedWriter(fw);
-			bw.write("<h3>hiiiiiiiiiii</h3>");
-			bw.close();
- 
-			System.out.println("Done");
- 
-		} catch (IOException ee) {
-			ee.printStackTrace();
-			System.out.println("in chatch");
-		}
+		<%	
 			
-			int count = Integer.parseInt((String) session.getAttribute("count"));
+		int count = 0;
+			if(session.getAttribute("count") != null)
+			count = Integer.parseInt(session.getAttribute("count").toString());
 			for (int i = 0; i < count; i++) {
 				String getelement = session.getAttribute("" + i).toString();
 				StringTokenizer sto = new StringTokenizer(getelement, "_");
@@ -78,29 +61,30 @@ else
 				if (type.equals("textbox")) {
 					String lable = (String) session.getAttribute(type + "_"+ id);
 					%>
-					<label> <%=lable%> :
-					</label><input type="text" class="form-control"><br>
-					<%
+		<label> <%=lable%> :
+		</label><input type="text" class="form-control"><br>
+		<%
 				} else if (type.equals("button")) {
 					StringTokenizer tempsto = new StringTokenizer(
 							(String) session.getAttribute(type + "_" + id), "_");
 					String lable = tempsto.nextToken();
 					String butname = tempsto.nextToken();
 				%><label> <%=lable%> :
-				</label><input type="button" value=<%=butname%> class="form-control"><br>
-				<%
+		</label><input type="button" value=<%=butname%> class="form-control"><br>
+		<%
 				} else if (type.equals("checkbox")) {
 					StringTokenizer tempsto = new StringTokenizer(
 							(String) session.getAttribute(type + "_" + id), "_");
 					String lable = tempsto.nextToken();
 					int nosub = Integer.parseInt(tempsto.nextToken());
 					%><label> <%=lable%> :
-					</label>
-					<%
+		</label>
+		<%
 			for (int j = 0; j < nosub; j++) {
 						String sublable = (String) session
 								.getAttribute("checkboxes_checkbox_" + id + "_"
 										+ j);
+						
 		%><input type="checkbox"><label><%=sublable%></label>
 		<%
 			}

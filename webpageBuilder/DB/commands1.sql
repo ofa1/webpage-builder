@@ -9,4 +9,4 @@ create table subdata(elementlable varchar(20),elementid varchar(20));
 
 create table user_details (username varchar(40) primary key, email varchar(60), password varchar(60), fname varchar(40), lname varchar(40));
 
-create table userpage(username varchar(40),pageid int);
+create table userpage(username varchar(40),pageid int,path varchar(100));
