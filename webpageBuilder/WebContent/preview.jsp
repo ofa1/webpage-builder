@@ -13,7 +13,27 @@
 </head>
 <body>
 
-	<%=Content.Navigation()%>
+	<%
+String user = "Guest";
+boolean flag = false;
+if(session.getAttribute("username") != null)
+	user = session.getAttribute("username").toString();
+else
+	flag = true;
+%>
+		<nav class="navbar navbar-default" role="navigation">
+			<ul class="nav nav-tabs nav-justified" id="navlist">
+				<li><a href="homepage.jsp">Home</a></li>
+				<%if(!flag) { %>
+				<li><a href="create-page.jsp">Create Page</a></li>
+				<li><a href="Logout">Logout</a></li>
+				<% }
+				else {%>
+				<li><a href="login.jsp">Login/Register</a></li>
+				<% } %>
+				<li><a href="contact-us.jsp">Contact Us</a></li>
+			</ul>
+		</nav>
 	<%
 		Enumeration<String> e = session.getAttributeNames();
 	%>

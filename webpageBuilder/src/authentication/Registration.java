@@ -37,6 +37,8 @@ public class Registration extends HttpServlet {
 		String username = request.getParameter("username");
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
+		String fname = request.getParameter("fname");
+		String lname = request.getParameter("lname");
 		try {
 			
 			Class.forName("com.mysql.jdbc.Driver");
@@ -54,7 +56,7 @@ public class Registration extends HttpServlet {
 			
 			Statement stmt = (Statement) con.createStatement();
 			
-			String str = "Insert into user_details values(\""+username+"\", \""+email+"\", \""+password+"\");";
+			String str = "Insert into user_details values(\""+username+"\", \""+email+"\", \""+password+"\", \""+fname+"\", \""+lname+"\");";
 			
 			System.out.println(str);
 			stmt.executeUpdate(str);
@@ -62,7 +64,6 @@ public class Registration extends HttpServlet {
 			con.close();
 		} catch(Exception ex) {
 			ex.printStackTrace();						
-		//	JOptionPane.showMessageDialog(frame, "Problem in updation");
 		}
 		
 	}
